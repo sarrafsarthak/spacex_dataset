@@ -38,7 +38,7 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
 
                                 html.P("Payload range (Kg):"),
                                 # TASK 3: Add a slider to select payload range
-                                dcc.RangeSlider(id='payload-slider',
+                                dcc.RangeSlider(id="payload-slider",
                                                 min = 0, max = 10000,
                                                 step = 1000, value = [min_payload, max_payload]
                                                 ),
@@ -74,9 +74,10 @@ def get_pie_chart(entered_site):
 )
 
 def get_scatter_plot(entered_site, payload_mass):
-    filter_df = spacex_df[spacex_df["Launch Site"] == entered_site]
+    f1_df = spacex_df.loc[(spacex_df["Payload Mass (kg)"]>=payload_mass[0]) & (spacex_df["Payload Mass (kg)"]<payload_mass[1])]
+    filter_df = f1_df[spacex_df["Launch Site"] == entered_site]
     if entered_site == "All":
-        fig1 = px.scatter(spacex_df, y = "class", x = "Payload Mass (kg)", color = "Booster Version Category")
+        fig1 = px.scatter(f1_df, y = "class", x = "Payload Mass (kg)", color = "Booster Version Category")
         return fig1
     else:
         fig1 = px.scatter(filter_df, y = "class", x = "Payload Mass (kg)", color = "Booster Version Category")
